@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSV Date Inner Joiner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-shape shape-1" aria-hidden="true"></div>
+  <div class="bg-shape shape-2" aria-hidden="true"></div>
+
+  <main class="app-card">
+    <header>
+      <p class="kicker">CSV Toolkit</p>
+      <h1>Date Inner Joiner</h1>
+      <p class="subtitle">Upload up to 6 CSV files, match rows by date, and export one merged CSV.</p>
+    </header>
+
+    <section class="controls">
+      <label for="csvFiles" class="file-label">Choose CSV files</label>
+      <input id="csvFiles" type="file" accept=".csv,text/csv" multiple />
+      <p id="fileHint" class="hint">You can upload 1 to 6 CSV files.</p>
+
+      <div class="button-row">
+        <button id="mergeButton" type="button">Merge by Date</button>
+        <button id="resetButton" type="button" class="secondary">Reset</button>
+      </div>
+    </section>
+
+    <section aria-live="polite" id="statusSection" class="status hidden"></section>
+
+    <section id="previewSection" class="preview hidden">
+      <h2>Preview</h2>
+      <div class="table-wrap">
+        <table id="previewTable"></table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
