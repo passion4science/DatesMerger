@@ -112,8 +112,7 @@ async function parseCSVFile(file, fileIndex) {
     .map((header, index) => ({ header: header.trim(), index }))
     .filter((column) => column.index !== dateColumnIndex);
 
-  const rowMap = new Map();
-
+  // Validate all rows first, then sort by date ascending before building the map.
   for (let i = 0; i < parsed.rows.length; i += 1) {
     const row = parsed.rows[i];
     if (row.length !== parsed.headers.length) {
@@ -121,18 +120,29 @@ async function parseCSVFile(file, fileIndex) {
         `In ${file.name}, row ${i + 2} has ${row.length} columns but the header has ${parsed.headers.length}.`
       );
     }
-
     const rawDate = row[dateColumnIndex];
-    const dateKey = normalizeDate(rawDate);
-    if (!dateKey) {
+    if (!normalizeDate(rawDate)) {
       throw new AppError(
         `In ${file.name}, row ${i + 2} has an invalid date value in "${parsed.headers[dateColumnIndex]}": "${rawDate}".`
       );
     }
+  }
+
+  const sortedRows = parsed.rows.slice().sort((a, b) => {
+    const keyA = normalizeDate(a[dateColumnIndex]) ?? "";
+    const keyB = normalizeDate(b[dateColumnIndex]) ?? "";
+    return keyA < keyB ? -1 : keyA > keyB ? 1 : 0;
+  });
+
+  const rowMap = new Map();
+
+  for (let i = 0; i < sortedRows.length; i += 1) {
+    const row = sortedRows[i];
+    const dateKey = normalizeDate(row[dateColumnIndex]);
 
     if (rowMap.has(dateKey)) {
       throw new AppError(
-        `In ${file.name}, duplicate date "${dateKey}" detected at row ${i + 2}. Each file must have unique dates for inner join.`
+        `In ${file.name}, duplicate date "${dateKey}" detected. Each file must have unique dates for inner join.`
       );
     }
 
