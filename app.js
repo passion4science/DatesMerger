@@ -24,8 +24,8 @@ async function onMergeClicked() {
     if (files.length === 0) {
       throw new AppError("Please select at least one CSV file.");
     }
-    if (files.length > 6) {
-      throw new AppError("You can upload a maximum of 6 CSV files.");
+    if (files.length > 10) {
+      throw new AppError("You can upload a maximum of 10 CSV files.");
     }
 
     setStatus("Reading and validating CSV files...", "success");
