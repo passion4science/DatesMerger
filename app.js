@@ -264,8 +264,9 @@ function innerJoinByDate(datasets) {
   const headers = ["date"];
 
   for (const dataset of datasets) {
+    const fileLabel = sanitizeHeader(dataset.fileName.replace(/\.[^.]+$/, ""));
     for (const col of dataset.columns) {
-      headers.push(`file${dataset.fileIndex}_${sanitizeHeader(col.header)}`);
+      headers.push(`${fileLabel}_${sanitizeHeader(col.header)}`);
     }
   }
 
